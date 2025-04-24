@@ -1,5 +1,10 @@
 const http = require('node:http')
-const url = require ('url')
+const url = require('url')
+const { handleMovieEndpoint } = require('./moviesRequest')
+const { handleSeriesEndpoint } = require('./seriesRequest')
+const { handleMusicEndpoint } = require('./musicRequest')
+
+
 const hostname = '127.0.0.1'
 const port = 3001
 
@@ -45,98 +50,6 @@ let series = [
     }
 ]
 
-const handleMusicEndpoint = (req,res) => {
-
-    if(req.method === 'GET') {
-
-        res.statusCode = 200
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({music:music}))
-
-    } else if (req.method === 'POST') {
-
-        res.statusCode = 200
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({message:'created', music:music}))
-
-    } else if (req.method === 'PUT') {
-
-        music.push = {'song':'Hometown', 'artist':'Adele'}
-        res.statusCode = 200
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({message:'updated', music:music}))
-    
-    } else if (req.method === 'DELETE') {
-
-        music.splice(0,1)
-        res.statusCode = 200
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({message:'deleted', music:music}))
-    }
-
-}
-
-const handleSeriesEndpoint = (req,res) => {
-
-    if(req.method === 'GET') {
-
-        res.statusCode = 200
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({series:series}))
-
-    } else if (req.method === 'POST') {
-
-        res.statusCode = 200
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({message:'created', series:series}))
-
-    } else if (req.method === 'PUT') {
-
-        series.push = {'tile':'Friends', 'number of seasons':10}
-        res.statusCode = 200
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({message:'updated', series:series}))
-    
-    } else if (req.method === 'DELETE') {
-
-        series.splice(0,1)
-        res.statusCode = 200
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({message:'deleted', series:series}))
-    }
-
-}
-
-const handleMovieEndpoint = (req,res) => {
-
-    if(req.method === 'GET') {
-
-        res.statusCode = 200
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({movies:movies}))
-
-    } else if (req.method === 'POST') {
-
-        res.statusCode = 200
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({message:'created', movies:movies}))
-
-    } else if (req.method === 'PUT') {
-
-        movies.push = {'tile':'The Vow', 'genre':'Drama'}
-        res.statusCode = 200
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({message:'updated', movies:movies}))
-    
-    } else if (req.method === 'DELETE') {
-
-        movies.splice(0,1)
-        res.statusCode = 200
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({message:'deleted', movies:movies}))
-    }
-
-}
 
 const server = http.createServer((req,res) => {
 
