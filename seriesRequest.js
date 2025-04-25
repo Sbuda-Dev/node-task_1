@@ -1,17 +1,69 @@
-exports.handleSeriesEndpoint = (req,res) => {
+const { getSeries, addSeries, findSeries, deleteSeries } = require("./file_manager")
+
+exports.handleSeriesEndpoint = (req,res, paramId) => {
 
     if(req.method === 'GET') {
 
-        res.statusCode = 200
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({series:series}))
+        if(paramId) {
+
+            findSeries(paramId).then(result => {
+
+                console.log(result)
+                res.statusCode = 200
+                res.setHeader('Content-Type', 'application/json')
+                res.end(JSON.stringify({series:series}))
+    
+            }).catch (err => {
+    
+                res.statusCode = 500
+                res.setHeader('Content-Type', 'application/json')
+                res.end(JSON.stringify({series:series}))
+            })
+
+
+        } else {
+
+            getSeries().then(result => {
+
+                console.log(result)
+                res.statusCode = 200
+                res.setHeader('Content-Type', 'application/json')
+                res.end(JSON.stringify({series:series}))
+    
+            }).catch (err => {
+    
+                res.statusCode = 500
+                res.setHeader('Content-Type', 'application/json')
+                res.end(JSON.stringify({series:series}))
+            })
+
+        }
+
 
     } else if (req.method === 'POST') {
 
-        res.statusCode = 200
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({message:'created', series:series}))
+        req.on('data', data => {
 
+            const jsonData = JSON.parse(data)
+            const {tile, numberOfSeasons} = jsonData
+
+            addSeries(title, numberOfSeasons).then(result => {
+
+                res.statusCode = 200
+                res.setHeader('Content-Type', 'application/json')
+                res.end(JSON.stringify({message:'added', series:series}))
+        
+            }).catch (err => {
+    
+                res.statusCode = 500
+                res.setHeader('Content-Type', 'application/json')
+                res.end(JSON.stringify({message:'err', series:series}))
+    
+            })
+
+        })
+    
+        
     } else if (req.method === 'PUT') {
 
         series.push = {'tile':'Friends', 'number of seasons':10}
@@ -21,10 +73,20 @@ exports.handleSeriesEndpoint = (req,res) => {
     
     } else if (req.method === 'DELETE') {
 
-        series.splice(0,1)
-        res.statusCode = 200
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({message:'deleted', series:series}))
+        deleteSeries(paramId).then(result => {
+
+            res.statusCode = 200
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify({message:'deleted', series:result}))
+
+        }).catch (err => {
+
+            res.statusCode = 200
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify({message:'deleted', series:series}))
+        })
+        
+        
     }
 
 }
